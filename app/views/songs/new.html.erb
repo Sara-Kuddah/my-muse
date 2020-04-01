@@ -1,0 +1,5 @@
+<h1>New Song for <%= @artist.name %></h1>
+
+# <%= link_to "New Song", new_song_path(:artist_id => @artist.id), { :class => "button waves-effect waves-light btn" } %>
+
+<%= render 'songs/form' %>
