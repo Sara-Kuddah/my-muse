@@ -30,9 +30,11 @@ RESTART YOUR RAILS SERVER
 http://localhost:3000/users/edit
 -------
 ADD: 
-<p>
+ <% if user_signed_in? %>
+  <p>
   Welcome <%= current_user.email %>
 </p>
+<% end %>
 ID BODY OF application.html.erb
 ------
  ADD:
@@ -44,4 +46,48 @@ IN <NAV>AT THE END
  ADD: before_action :authenticate_user!, only: [:new]
 IN: \app\controllers\artists_controller.rb
 ---------
+RUN: rails g migration AddUserRefToArtists user:references
+--------
+RUN: rails db:migrate
+--------
+ADD: belongs_to :user
+IN \app\models\artist.rb
+-----------
+ADD: has_many :artists
+IN \app\models\user.rb
+---------
+RUN: Artist.create!(name: 'Test', hometown: 'Test',img: 'http://mccarthyamp.com/wp-content/uploads/2016/02/23445669273_bfc7c4062b_b.jpg', albums: 10, user: User.first)
+IN   rails c   TO TEST
+-------
+ @artist = Artist.new(artist_params)
+    @artist.user = current_user
+    if @artist.save
+     redirect_to artists_path
+    else
+      render 'new'
+    end
+IN CREATE   
+-------------------
+ADD:  @artists = current_user.artists.all
+IN INDEX   
+-----------
+if @artist.user != current_user 
+flash[:notice] = 'Not allowed!'
+      redirect_to artists_path
+IN SHOW
+---------
+ ADD: before_action :find_todo, except: [:index, :new, :create]
+IN: \app\controllers\artists_controller.rb
+---------
+def find_todo
+  @todo = Todo.find(params[:id])
+end
+
+AT THE END OF \app\controllers\artists_controller.rb 
+
+------
+I HAVE AN ISSUE IN 
+gem 'duktape'
+
+
 

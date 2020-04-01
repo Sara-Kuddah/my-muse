@@ -9,10 +9,11 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     
   </head>
-
+  <% if user_signed_in? %>
   <p>
   Welcome <%= current_user.email %>
-  </p>
+</p>
+<% end %>
   <body>
  <%= render 'layouts/nav' %>
  
