@@ -1,3 +1,47 @@
 gem 'devise'
+AFTER GEM JUK
 bundle install
 rails generate devise:install
+-----
+Settings for Devise: config/initializers/devise.rb
+-----
+ADD: 
+config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+ to the config/environments/development.rb file.
+AT LAST
+-----
+ ADD:
+<p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p>
+in app/views/layouts/application.html.erb
+BEFORE  <%= yield %> LINE
+-----------
+ RUN: rails g devise:views
+---------
+RUN: rails generate devise User
+--------
+RUN: rails routes
+RUN: rails db:migrate
+------
+RESTART YOUR RAILS SERVER
+-----
+ GOTO: http://localhost:3000/users/sign_in
+--------
+http://localhost:3000/users/edit
+-------
+ADD: 
+<p>
+  Welcome <%= current_user.email %>
+</p>
+ID BODY OF application.html.erb
+------
+ ADD:
+<% if user_signed_in? %>
+  <li><%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></li>
+<% end %>
+IN <NAV>AT THE END
+-----
+ ADD: before_action :authenticate_user!, only: [:new]
+IN: \app\controllers\artists_controller.rb
+---------
+
